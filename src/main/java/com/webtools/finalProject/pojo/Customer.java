@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -16,26 +17,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Table(name="customer_table")
 public class Customer {
 
-	@Autowired
 	@ManyToOne
+	@JoinColumn
 	private User user;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="customerId", unique = true, nullable = false)
-	private String id;
+	@Column(name="customer_id", unique = true, nullable = false)
+	private int id;
 	
 	@Column(name="name")
 	private String name;
 	
-	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+	@ManyToOne
+	@JoinColumn
+	private Flight flight;
+	
+	@OneToOne(mappedBy = "customer")
 	private Seat seat;
 	
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public User getUser() {
@@ -55,6 +60,12 @@ public class Customer {
 	}
 	public void setSeat(Seat seat) {
 		this.seat = seat;
+	}
+	public Flight getFlight() {
+		return flight;
+	}
+	public void setFlight(Flight flight) {
+		this.flight = flight;
 	}
 	
 	

@@ -1,10 +1,11 @@
 package com.webtools.finalProject.pojo;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -14,15 +15,18 @@ import javax.persistence.Table;
 public class Airliner {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="airliner_name")
 	private String name;
 
-	@OneToMany(mappedBy="airliner")
+	@OneToMany(mappedBy="airliner", cascade = CascadeType.ALL)
     private List<Airplane> fleet;
     
-	@OneToMany(mappedBy="airplane")
-    private List<Flight> flightSchedule;
 
+	
+	public Airliner(String name) {
+		this.name = name;
+		this.fleet = new ArrayList<Airplane>();
+	}
 	public String getName() {
 		return name;
 	}
@@ -39,13 +43,6 @@ public class Airliner {
 		this.fleet = fleet;
 	}
 
-	public List<Flight> getFlightSchedule() {
-		return flightSchedule;
-	}
-
-	public void setFlightSchedule(List<Flight> flightSchedule) {
-		this.flightSchedule = flightSchedule;
-	}
 
 
     

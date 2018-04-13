@@ -3,12 +3,12 @@ package com.webtools.finalProject.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -26,14 +26,14 @@ public class Airplane {
 	
 	@Id
 	@ManyToOne
-	@JoinColumn(name="airliner",nullable=false)
+	@JoinColumn
 	private Airliner airliner;
 	
 	@OneToOne
-	@PrimaryKeyJoinColumn
+	@JoinColumn
 	private Flight flight;
 	
-	@OneToMany
+	@OneToMany(mappedBy="airplane",cascade = CascadeType.ALL)
 	private List<Seat> seats;
 
 	public Airplane(String modelNumber) {

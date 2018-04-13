@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,7 +21,7 @@ public class Flight {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private String flightNum;
+	private int flightNum;
 
 	@Column(name="departure")
 	private String departure;
@@ -40,17 +41,19 @@ public class Flight {
 	@Column(name="availSeatsNum")
 	private int availSeatsNum;
 
+	@OneToMany(mappedBy="flight", cascade = CascadeType.ALL)
+	private List<Customer> customers;
 
 	public Flight() {
 
 	}
 
 
-	public String getFlightNum() {
+	public int getFlightNum() {
 		return flightNum;
 	}
 
-	public void setFlightNum(String flightNum) {
+	public void setFlightNum(int flightNum) {
 		this.flightNum = flightNum;
 	}
 

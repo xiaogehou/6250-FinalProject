@@ -7,9 +7,8 @@ public class AirplanePK implements Serializable{
 	private String modelNumber;
 	private Airliner airliner;
 	
-	public AirplanePK(String modelNumber,Airliner airliner) {
-		this.modelNumber = modelNumber;
-		this.airliner = airliner;
+	public AirplanePK() {
+		
 	}
 
 	public String getModelNumber() {

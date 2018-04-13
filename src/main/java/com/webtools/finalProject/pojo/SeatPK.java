@@ -5,13 +5,11 @@ import java.io.Serializable;
 public class SeatPK implements Serializable {
 
 	private String rowNumber;
-	private String column;
+	private String columnNum;
 	private Airplane airplane;
 
-	public SeatPK(String rowNumber, String column, Airplane airplane) {
-		this.rowNumber = rowNumber;
-		this.column = column;
-		this.airplane = airplane;
+	public SeatPK() {
+
 	}
 
 	public String getRowNumber() {
@@ -22,12 +20,12 @@ public class SeatPK implements Serializable {
 		this.rowNumber = rowNumber;
 	}
 
-	public String getColumn() {
-		return column;
+	public String getColumnNum() {
+		return columnNum;
 	}
 
-	public void setColumn(String column) {
-		this.column = column;
+	public void setColumnNum(String columnNum) {
+		this.columnNum = columnNum;
 	}
 
 	public Airplane getAirplane() {
@@ -45,7 +43,7 @@ public class SeatPK implements Serializable {
 		final int PRIME = 31;
 		int result = 1;
 		result = PRIME * result + ((rowNumber == null) ? 0 : rowNumber.hashCode());
-		result = PRIME * result + ((column == null) ? 0 : column.hashCode());
+		result = PRIME * result + ((columnNum == null) ? 0 : columnNum.hashCode());
 		result = PRIME * result + ((airplane == null) ? 0 : airplane.hashCode());
 		return result;
 
@@ -70,10 +68,10 @@ public class SeatPK implements Serializable {
 		} else if (!rowNumber.equals(other.rowNumber))
 			return false;
 		
-		if (column == null) {
-			if (other.column != null)
+		if (columnNum == null) {
+			if (other.columnNum != null)
 				return false;
-		} else if (!column.equals(other.column))
+		} else if (!columnNum.equals(other.columnNum))
 			return false;
 		
 		if (airplane == null) {
