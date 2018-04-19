@@ -28,7 +28,7 @@ public class Seat implements Serializable {
 	private String columnNum;
 
 	@OneToOne
-	@JoinColumn
+	@JoinColumn(name="customer_id")
 	private Customer customer;
 
 	@Column(name = "price")
@@ -36,13 +36,16 @@ public class Seat implements Serializable {
 
 	@Id
 	@ManyToOne
-	@JoinColumns({ @JoinColumn(name = "airplane_modelNum"), @JoinColumn(name = "airplane_airliner") })
+	@JoinColumns({ @JoinColumn(name = "airplane_airliner"), @JoinColumn(name = "airplane_modelNumber") })
 	private Airplane airplane;
 
-	public Seat(String rowNumber, String columnNum, Airplane airplane) {
+	public Seat() {
+		
+	}
+	
+	public Seat(String rowNumber, String columnNum) {
 		this.rowNumber = rowNumber;
 		this.columnNum = columnNum;
-		this.airplane = airplane;
 	}
 
 	public String getRowNumber() {

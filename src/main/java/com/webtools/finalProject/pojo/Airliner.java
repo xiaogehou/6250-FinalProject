@@ -20,8 +20,10 @@ public class Airliner {
 
 	@OneToMany(mappedBy="airliner", cascade = CascadeType.ALL)
     private List<Airplane> fleet;
-    
-
+	
+	public Airliner() {
+		
+	}
 	
 	public Airliner(String name) {
 		this.name = name;
@@ -43,7 +45,5 @@ public class Airliner {
 		this.fleet = fleet;
 	}
 
-
-
-    
+ 
 }

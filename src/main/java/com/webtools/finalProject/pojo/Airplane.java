@@ -29,29 +29,23 @@ public class Airplane {
 	@JoinColumn
 	private Airliner airliner;
 	
-	@OneToOne
-	@JoinColumn
-	private Flight flight;
+	@OneToMany(mappedBy="airplane", cascade = CascadeType.ALL)
+	private List<Flight> flights;
 	
 	@OneToMany(mappedBy="airplane",cascade = CascadeType.ALL)
 	private List<Seat> seats;
+	
+	public Airplane() {
+		
+	}
 
-	public Airplane(String modelNumber) {
+	public Airplane(String modelNumber, Airliner airliner){
 		this.modelNumber = modelNumber;
-		seats = new ArrayList<Seat>();
+		this.airliner = airliner;
+		this.flights = new ArrayList<Flight>();
+		this.seats =  generateSeats();
 	}
 
-	public void generateSeats(Airplane airplane) {
-		String[] columns = { "Window_left", "Middle_left", "Aisle_left", "Window_right", "Middle_right",
-				"Aisle_right" };
-		for (int row = 1; row <= 25; row++) {
-			String r = String.valueOf(row);
-			for (String column : columns) {
-				Seat seat = new Seat(r, column, airplane);
-				seats.add(seat);
-			}
-		}
-	}
 
 	public String getModelNumber() {
 		return modelNumber;
@@ -61,13 +55,16 @@ public class Airplane {
 		this.modelNumber = modelNumber;
 	}
 
-	public Flight getFlight() {
-		return flight;
+	
+	public List<Flight> getFlights() {
+		return flights;
 	}
 
-	public void setFlight(Flight flight) {
-		this.flight = flight;
+
+	public void setFlight(List<Flight> flights) {
+		this.flights = flights;
 	}
+
 
 	public List<Seat> getSeats() {
 		return seats;
@@ -85,4 +82,18 @@ public class Airplane {
 		this.airliner = airliner;
 	}
 
+	public List<Seat> generateSeats() {
+		List<Seat> seats = new ArrayList<Seat>();
+		String[] columns = { "Window_left", "Middle_left", "Aisle_left", "Window_right", "Middle_right",
+				"Aisle_right" };
+		for (int row = 1; row <= 25; row++) {
+			String r = String.valueOf(row);
+			for (String column : columns) {
+				Seat seat = new Seat(r, column);
+				seat.setAirplane(this);
+				seats.add(seat);
+			}
+		}
+		return seats;
+	}
 }

@@ -1,10 +1,15 @@
 package com.webtools.finalProject.pojo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -28,9 +33,14 @@ public class User {
 	@Column(name="role")
 	private Role role;
 	
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+	List<Customer> customers;
+	
 	public enum Role{customer,admin};
 	
-	
+	public User() {
+		customers = new ArrayList<Customer>();
+	}
 	
 	public String getEmail() {
 		return email;
@@ -61,7 +71,14 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+
+	public void setCustomers(List<Customer> customers) {
+		this.customers = customers;
 	};
-	
 	
 }

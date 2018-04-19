@@ -11,9 +11,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="flight_table")
@@ -29,19 +31,21 @@ public class Flight {
 	@Column(name="destination")
 	private String destination;
 
-	@OneToOne(mappedBy="flight", cascade = CascadeType.ALL)
+	@ManyToOne
 	private Airplane airplane;
 
 	@Column(name="departureTime")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date departureTime;
 
 	@Column(name="arrivingTime")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date arrivingTime;
 
 	@Column(name="availSeatsNum")
 	private int availSeatsNum;
 
-	@OneToMany(mappedBy="flight", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy="flights", cascade = CascadeType.ALL)
 	private List<Customer> customers;
 
 	public Flight() {
@@ -125,7 +129,6 @@ public class Flight {
 	}
 
 	public void buySeats(Seat seat, Customer customer) {
-		customer.setSeat(seat);
 		seat.setCustomer(customer);
 	}
 
