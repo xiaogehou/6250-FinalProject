@@ -14,9 +14,14 @@
 	<c:set var="customers" value="${sessionScope.user.customers}" />
 	<h3>Choose Passengers:</h3>
 	<c:if test="${customers!=null&&fn:length(customers)!=0}">
-		<c:forEach var="customer" items="${customers}">
-			<input type="checkbox" name="customer" value="${customer.id}" />${customer.name}</br>
-		</c:forEach>
+		<form action="${contextPath}/user/buyTicket.htm" method="post">
+
+			<c:forEach var="customer" items="${customers}">
+				<input type="checkbox" name="customer" value="${customer.id}" />${customer.name}</br>
+			</c:forEach>
+			
+			<input type="submit" value="Buy Tickets"/>
+		</form>
 	</c:if>
 
 	<h3>Add a Passenger:</h3>

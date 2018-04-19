@@ -49,7 +49,7 @@ public class Flight {
 	private List<Customer> customers;
 
 	public Flight() {
-
+		customers = new ArrayList<Customer>();
 	}
 
 
@@ -100,6 +100,13 @@ public class Flight {
 	public void setArrivingTime(Date arrivingTime) {
 		this.arrivingTime = arrivingTime;
 	}
+	
+	
+
+
+	public List<Customer> getCustomers() {
+		return customers;
+	}
 
 
 	public int getAvailSeatsNum() {
@@ -149,4 +156,6 @@ public class Flight {
 		}
 		return lowestSeat;
 	}
+	
+	
 }

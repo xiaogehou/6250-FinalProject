@@ -1,17 +1,17 @@
 package com.webtools.finalProject.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.io.PrintWriter;
 import java.lang.ProcessBuilder.Redirect;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +19,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.webtools.finalProject.DAO.FlightDAO;
+import com.webtools.finalProject.DAO.UserDAO;
+import com.webtools.finalProject.pojo.Customer;
 import com.webtools.finalProject.pojo.Flight;
+import com.webtools.finalProject.pojo.Seat;
 
 @Controller
 public class FlightController {
 
 	@Autowired
 	FlightDAO flightDao;
+	
+	@Autowired
+	UserDAO userDao;
 
 	@RequestMapping(value = "/user/search.htm", method = RequestMethod.GET)
 	public ModelAndView handleSearch(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -60,6 +66,9 @@ public class FlightController {
 		PrintWriter out = response.getWriter();
 		ModelAndView mav = new ModelAndView();
 		if (session.getAttribute("user") != null) {
+			int flightNum = Integer.parseInt(request.getParameter("flightNum"));
+			Flight flight = flightDao.getFlight(flightNum);
+			session.setAttribute("flight", flight);
 			mav.setViewName("buyTickets");
 			return mav;
 		} else {
@@ -68,5 +77,24 @@ public class FlightController {
 			return null;
 		}
 
+	}
+	
+	@RequestMapping(value = "/user/buyTicket.htm", method = RequestMethod.POST)
+	public ModelAndView buyTickets(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Flight flight = (Flight) request.getSession().getAttribute("flight");
+		String[] passengerIDs = request.getParameterValues("customer");
+		for(String s: passengerIDs) {
+			Customer c = userDao.get(Integer.parseInt(s));
+			Seat seat = flight.AvailSeatLowestSeat();
+			flight.buySeats(seat, c);
+			flight.getCustomers().add(c);
+			c.getFlights().add(flight);
+			flight.setAvailSeatsNum(flight.getAvailSeatsNum());
+			userDao.updateCustomer(c);
+			flightDao.updateFlight(flight);
+			flightDao.updateSeat(seat);
+		}
+		
+		return new ModelAndView("buy-success");
 	}
 }

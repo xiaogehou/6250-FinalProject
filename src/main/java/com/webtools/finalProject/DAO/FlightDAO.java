@@ -11,7 +11,9 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import com.webtools.finalProject.pojo.Customer;
 import com.webtools.finalProject.pojo.Flight;
+import com.webtools.finalProject.pojo.Seat;
 
 @Repository
 public class FlightDAO extends DAO {
@@ -63,6 +65,30 @@ public class FlightDAO extends DAO {
 			rollback();
 			System.out.println(e.toString());
 			throw e;
+		}
+	}
+	
+	public void updateFlight(Flight f) throws Exception {
+		try {
+			begin();
+			getSession().merge(f);
+			commit();
+		} catch (HibernateException e) {
+			rollback();
+			throw new Exception("Exception while updating flight: " + e.getMessage());
+		}
+	}
+	
+
+	public void updateSeat(Seat seat) throws Exception {
+		// TODO Auto-generated method stub
+		try {
+			begin();
+			getSession().merge(seat);
+			commit();
+		} catch (HibernateException e) {
+			rollback();
+			throw new Exception("Exception while updating seat: " + e.getMessage());
 		}
 	}
 }

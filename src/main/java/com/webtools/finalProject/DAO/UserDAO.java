@@ -29,19 +29,19 @@ public class UserDAO extends DAO {
 		}
 	}
 	
-	public User get(String userEmail){
-		try {
-			begin();
-			Query q = getSession().createQuery("from User where userEmail = :useremail");
-			q.setString("useremail", userEmail);
-			User user = (User) q.uniqueResult();
-			return user;
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
-			return null;
-		
-	}
+//	public User get(String userEmail){
+//		try {
+//			begin();
+//			Query q = getSession().createQuery("from User where userEmail = :useremail");
+//			q.setString("useremail", userEmail);
+//			User user = (User) q.uniqueResult();
+//			return user;
+//		}catch(Exception e){
+//			System.out.println(e.getMessage());
+//		}
+//			return null;
+//		
+//	}
 	
 
 	public User register(User u) throws Exception {
@@ -80,5 +80,29 @@ public class UserDAO extends DAO {
 		}
 	}
 	
+	public Customer get(int id) throws Exception{
+		try {
+			begin();
+			Query q = getSession().createQuery("from Customer WHERE id= :id");
+			q.setInteger("id", id);
+			Customer c = (Customer) q.uniqueResult();
+			commit();
+			return c;
+		} catch (HibernateException e) {
+			rollback();
+			throw new Exception("Exception while creating customer: " + e.getMessage());
+		}
+	}
+	
+	public void updateCustomer(Customer c) throws Exception {
+		try {
+			begin();
+			getSession().merge(c);
+			commit();
+		} catch (HibernateException e) {
+			rollback();
+			throw new Exception("Exception while updating customer: " + e.getMessage());
+		}
+	}
 
 }
