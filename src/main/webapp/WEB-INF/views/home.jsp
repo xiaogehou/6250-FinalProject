@@ -17,25 +17,27 @@
 </script>
 </head>
 <body>
-	<c:set var="user" value="${sessionScope.user}" />
+	<c:set var="userId" value="${sessionScope.user}" />
+	<c:set var="user" value="${sessionScope.u}" />
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 	<c:choose>
 		<c:when test="${empty user}">
 			<div>
-				<a href="${contextPath}/user/login.htm">[Login]</a> <a
-					href="${contextPath}/user/register.htm">[Create An Account]</a>
+				<a href="${contextPath}/login.htm">[Login]</a> 
+				<a href="${contextPath}/register.htm">[Create An Account]</a>
 			</div>
 		</c:when>
 		<c:otherwise>
 			<h2>Welcome, ${user.name}</h2>
 			<a href="${contextPath}/user/logout.htm">[Logout]</a>
+			<a href="${contextPath}/user/tickets.htm">[View History Orders]</a>
 		</c:otherwise>
 	</c:choose>
 	<div>
-		<form action="${contextPath}/user/search.htm" method="get">
-			Flying From: <input type="text" name="from" /></br> Flying To: <input
-				type="text" name="to" /></br> Departing: <input type="text"
-				id="datepicker" name="date" /></br> <input type="submit" value="Search" />
+		<form action="${contextPath}/search.htm" method="get">
+			Flying From: <input type="text" name="from" required="required"/></br> Flying To: <input
+				type="text" name="to" required="required"/></br> Departing: <input type="text"
+				id="datepicker" name="date" required="required"/></br> <input type="submit" value="Search" />
 		</form>
 	</div>
 

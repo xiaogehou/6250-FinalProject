@@ -11,7 +11,7 @@
 
 	<h1>Login Page</h1>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
-	<form action="${contextPath}/user/login.htm" method="POST">
+	<form action="${contextPath}/login.htm" method="POST">
 		<table>
 			<tr>
 				<td>Email:</td>

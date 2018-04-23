@@ -11,9 +11,8 @@
 	<h2>
 		<u>Here are the search results</u>
 	</h2>
-	
-	<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-
+	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+	<a href="${contextPath}">[Back to Search]</a>
 	<table border="1">
 		<tr>
 			<td><h4>Flight Number</h4></td>
@@ -34,7 +33,9 @@
 				<td>${flight.airplane.airliner.name}</td>
 				<td>${flight.departureTime}</td>
 				<td>${flight.arrivingTime}</td>
-				<td>${flight.availSeatsNum}<a href="${contextPath}/user/buyTicket.htm?flightNum=${flight.flightNum}">[Buy Ticket]</a></td>
+				<td>${flight.availSeatsNum}<a
+					href="${contextPath}/user/buyTicket.htm?flightNum=${flight.flightNum}">[Buy
+						Ticket]</a></td>
 			</tr>
 
 		</c:forEach>

@@ -29,6 +29,20 @@ public class UserDAO extends DAO {
 		}
 	}
 	
+	public User getUser(int id) throws Exception{
+		try {
+			begin();
+			Query q = getSession().createQuery("from User WHERE id= :id");
+			q.setInteger("id", id);
+			User u = (User) q.uniqueResult();
+			commit();
+			return u;
+		} catch (HibernateException e) {
+			rollback();
+			throw new Exception("Exception while get user: " + e.getMessage());
+		}
+	}
+	
 //	public User get(String userEmail){
 //		try {
 //			begin();
@@ -80,7 +94,7 @@ public class UserDAO extends DAO {
 		}
 	}
 	
-	public Customer get(int id) throws Exception{
+	public Customer getCustomer(int id) throws Exception{
 		try {
 			begin();
 			Query q = getSession().createQuery("from Customer WHERE id= :id");
@@ -90,7 +104,7 @@ public class UserDAO extends DAO {
 			return c;
 		} catch (HibernateException e) {
 			rollback();
-			throw new Exception("Exception while creating customer: " + e.getMessage());
+			throw new Exception("Exception while get customer: " + e.getMessage());
 		}
 	}
 	

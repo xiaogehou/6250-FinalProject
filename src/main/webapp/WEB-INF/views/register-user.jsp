@@ -15,7 +15,7 @@
 
 	<h2>Register a New User</h2>
 
-	<form:form action="${contextPath}/user/register" commandName="user"
+	<form:form action="${contextPath}/register" commandName="user"
 		method="post">
 
 		<table>

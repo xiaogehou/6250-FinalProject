@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.webtools.finalProject.DAO.AirlinerDAO;
+import com.webtools.finalProject.DAO.UserDAO;
 import com.webtools.finalProject.pojo.Airliner;
+import com.webtools.finalProject.pojo.User;
 
 /**
  * Handles requests for the application home page.
@@ -25,11 +27,22 @@ public class HomeController {
 
 	@Autowired
 	AirlinerDAO airlinerDao;
+	
+	@Autowired
+	UserDAO userDao;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() throws Exception {
 		
-		//test generate airliners:
+		//new a admin:
+//		User admin = new User();
+//		admin.setName("admin");
+//		admin.setEmail("admin@husky.neu.edu");
+//		admin.setPassword("123");
+//		admin.setRole(User.Role.admin);
+//		userDao.register(admin);
+//		
+//		//test generate airliners:
 //		airlinerDao.generateDatas();
 		
 		

@@ -11,7 +11,8 @@
 <body>
 	<h2>Buy Tickets</h2>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
-	<c:set var="customers" value="${sessionScope.user.customers}" />
+	<a href="${contextPath}">[Back to Search]</a> 
+	<c:set var="customers" value="${user.customers}" />
 	<h3>Choose Passengers:</h3>
 	<c:if test="${customers!=null&&fn:length(customers)!=0}">
 		<form action="${contextPath}/user/buyTicket.htm" method="post">

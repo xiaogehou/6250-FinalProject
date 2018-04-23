@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.lang.ProcessBuilder.Redirect;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -23,6 +24,7 @@ import com.webtools.finalProject.DAO.UserDAO;
 import com.webtools.finalProject.pojo.Customer;
 import com.webtools.finalProject.pojo.Flight;
 import com.webtools.finalProject.pojo.Seat;
+import com.webtools.finalProject.pojo.User;
 
 @Controller
 public class FlightController {
@@ -33,7 +35,7 @@ public class FlightController {
 	@Autowired
 	UserDAO userDao;
 
-	@RequestMapping(value = "/user/search.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "/search.htm", method = RequestMethod.GET)
 	public ModelAndView handleSearch(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String from = request.getParameter("from");
 		String to = request.getParameter("to");
@@ -65,10 +67,13 @@ public class FlightController {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
 		ModelAndView mav = new ModelAndView();
+		Integer userId = (Integer) session.getAttribute("user");
+		User u = userDao.getUser(userId);
 		if (session.getAttribute("user") != null) {
 			int flightNum = Integer.parseInt(request.getParameter("flightNum"));
 			Flight flight = flightDao.getFlight(flightNum);
 			session.setAttribute("flight", flight);
+			mav.addObject("user",u);
 			mav.setViewName("buyTickets");
 			return mav;
 		} else {
@@ -81,20 +86,37 @@ public class FlightController {
 	
 	@RequestMapping(value = "/user/buyTicket.htm", method = RequestMethod.POST)
 	public ModelAndView buyTickets(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Flight flight = (Flight) request.getSession().getAttribute("flight");
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();
+		Integer userId = (Integer) session.getAttribute("user");
+		Flight flight = (Flight) session.getAttribute("flight");
 		String[] passengerIDs = request.getParameterValues("customer");
-		for(String s: passengerIDs) {
-			Customer c = userDao.get(Integer.parseInt(s));
-			Seat seat = flight.AvailSeatLowestSeat();
-			flight.buySeats(seat, c);
-			flight.getCustomers().add(c);
-			c.getFlights().add(flight);
-			flight.setAvailSeatsNum(flight.getAvailSeatsNum());
-			userDao.updateCustomer(c);
-			flightDao.updateFlight(flight);
-			flightDao.updateSeat(seat);
+		if(passengerIDs==null) {
+			response.getWriter().println("<script>alert('Please Select any Passenger!');history.go(-1);</script>");
+		    return null;
+		}else {
+			List<Customer> customers = new ArrayList<Customer>();
+			Map<Customer, Seat> map = new HashMap<Customer, Seat>();
+			for(String s: passengerIDs) {
+				Customer c = userDao.getCustomer(Integer.parseInt(s));
+				Seat seat = flight.AvailSeatLowestSeat();
+				flight.buySeats(seat, c);
+				flight.getCustomers().add(c);
+				c.getFlights().add(flight);
+				flight.setAvailSeatsNum(flight.getAvailSeatsNum());
+				userDao.updateCustomer(c);
+				flightDao.updateFlight(flight);
+				flightDao.updateSeat(seat);
+				customers.add(c);
+				map.put(c, seat);
+			}
+			User u = userDao.getUser(userId);
+			mav.addObject("customers",customers);
+			mav.addObject("map",map);
+			mav.addObject("user",u);
+			mav.addObject("flight",flight);
+			mav.setViewName("buy-success");
+			return mav;
 		}
-		
-		return new ModelAndView("buy-success");
 	}
 }

@@ -96,4 +96,10 @@ public class Airplane {
 		}
 		return seats;
 	}
+
+	@Override
+	public String toString() {
+		return  modelNumber;
+	}
+	
 }

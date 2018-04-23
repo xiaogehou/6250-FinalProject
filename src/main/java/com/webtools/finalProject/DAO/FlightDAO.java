@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.webtools.finalProject.pojo.Customer;
 import com.webtools.finalProject.pojo.Flight;
 import com.webtools.finalProject.pojo.Seat;
+import com.webtools.finalProject.pojo.User;
 
 @Repository
 public class FlightDAO extends DAO {
@@ -50,6 +51,34 @@ public class FlightDAO extends DAO {
 		} catch (HibernateException e) {
 			rollback();
 			throw e;
+		}
+	}
+	
+	public List<Flight> getFlights(String from, String to) throws Exception {
+		try {
+			begin();
+			Criteria crit = getSession().createCriteria(Flight.class);
+			crit.add(Restrictions.ilike("departure", from, MatchMode.ANYWHERE));
+			crit.add(Restrictions.ilike("destination", to, MatchMode.ANYWHERE));
+
+			List<Flight> flights = crit.list();
+
+			commit();
+			return flights;
+		} catch (HibernateException e) {
+			rollback();
+			throw e;
+		}
+	}
+	
+	public void deleteFlight(Flight flight) throws Exception {
+		try {
+			begin();
+			getSession().delete(flight);
+			commit();
+		} catch (HibernateException e) {
+			rollback();
+			throw new Exception("Could not delete flight");
 		}
 	}
 
@@ -89,6 +118,17 @@ public class FlightDAO extends DAO {
 		} catch (HibernateException e) {
 			rollback();
 			throw new Exception("Exception while updating seat: " + e.getMessage());
+		}
+	}
+	
+	public void create(Flight f) throws Exception {
+		try {
+			begin();
+			getSession().save(f);
+			commit();
+		} catch (HibernateException e) {
+			rollback();
+			throw e;
 		}
 	}
 }

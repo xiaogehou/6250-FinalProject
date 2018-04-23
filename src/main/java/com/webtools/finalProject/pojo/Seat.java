@@ -87,4 +87,11 @@ public class Seat implements Serializable {
 	public void setAirplane(Airplane airplane) {
 		this.airplane = airplane;
 	}
+
+	@Override
+	public String toString() {
+		return "Seat [rowNumber=" + rowNumber + ", columnNum=" + columnNum + ", price=" + price + "]";
+	}
+	
+	
 }

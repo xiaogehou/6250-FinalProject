@@ -9,15 +9,13 @@
 <title>Buy Success</title>
 </head>
 <body>
-	<h1>Bought tickets Successfully!</h1>
-	<a href="${pageContext.request.contextPath}">[Back to Search]</a> 
+	<h1>History Orders</h1>
 	<p>User: ${user.name}</p>
-
-	<c:if test="${customers!=null&&fn:length(customers)!=0}">
-		<c:forEach items="${customers}" var="customer">
-
+	<a href="${pageContext.request.contextPath}">[Back to Search]</a>
+	<c:forEach items="${user.customers}" var="customer">
+		<c:set var="flights" value="${customer.flights}" />
+		<c:if test="${flights!=null&&fn:length(flights)!=0}">
 			<p>Passenger: ${customer.name}</p>
-
 			<table border="1">
 				<tr>
 					<td><h4>Flight Number</h4></td>
@@ -27,21 +25,21 @@
 					<td><h4>Airliner</h4></td>
 					<td><h4>Departure Time</h4></td>
 					<td><h4>Arriving Time</h4></td>
-					<td><h4>Seat</h4></td>
 				</tr>
-				<tr>
-					<td>${flight.flightNum}</td>
-					<td>${flight.departure}</td>
-					<td>${flight.destination}</td>
-					<td>${flight.airplane.modelNumber}</td>
-					<td>${flight.airplane.airliner.name}</td>
-					<td>${flight.departureTime}</td>
-					<td>${flight.arrivingTime}</td>
-					<td>${map[customer]}</td>
-				</tr>
+				<c:forEach var="flight" items="${flights}">
+					<tr>
+						<td>${flight.flightNum}</td>
+						<td>${flight.departure}</td>
+						<td>${flight.destination}</td>
+						<td>${flight.airplane.modelNumber}</td>
+						<td>${flight.airplane.airliner.name}</td>
+						<td>${flight.departureTime}</td>
+						<td>${flight.arrivingTime}</td>
+					</tr>
+				</c:forEach>
 			</table>
+		</c:if>
+	</c:forEach>
 
-		</c:forEach>
-	</c:if>
 </body>
 </html>

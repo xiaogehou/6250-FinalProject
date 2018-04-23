@@ -1,6 +1,8 @@
 package com.webtools.finalProject.controller;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -13,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.webtools.finalProject.DAO.FlightDAO;
 import com.webtools.finalProject.DAO.UserDAO;
 import com.webtools.finalProject.pojo.Customer;
 import com.webtools.finalProject.pojo.User;
+import com.webtools.finalProject.pojo.Flight;
 import com.webtools.finalProject.pojo.User.Role;
 import com.webtools.finalProject.validator.UserValidator;
 
@@ -27,16 +31,19 @@ public class UserController {
 	UserDAO userDao;
 	
 	@Autowired
+	FlightDAO flightDao;
+	
+	@Autowired
 	UserValidator validator;
 	
-	@RequestMapping(value = "/user/login.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "/login.htm", method = RequestMethod.GET)
 	public String showLoginForm() {
 
 		return "user-login";
 	}
 
-	@RequestMapping(value = "/user/login.htm", method = RequestMethod.POST)
-	public String handleLoginForm(HttpServletRequest request, UserDAO userDao) {
+	@RequestMapping(value = "/login.htm", method = RequestMethod.POST)
+	public ModelAndView handleLoginForm(HttpServletRequest request, UserDAO userDao) {
 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -45,12 +52,21 @@ public class UserController {
 			User u = userDao.get(username, password);
 
 			if (u != null) {
-				session.setAttribute("user", u);
-				return "home";
+				if(u.getRole().equals(User.Role.customer)) {
+
+					session.setAttribute("user", u.getUserId());
+					session.setAttribute("u", u);
+					return new ModelAndView("home");
+					
+				}else {
+					List<Flight> allFlights = flightDao.getAllFlights();
+					return new ModelAndView("adminHome","flights", allFlights);
+				}
+				
 			} else {
 				System.out.println("UserName/Password does not exist");
 				session.setAttribute("errorMessage", "UserName/Password does not exist");
-				return "error";
+				return new ModelAndView("error");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -68,7 +84,7 @@ public class UserController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/user/register", method = RequestMethod.GET)
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	protected ModelAndView registerUser() throws Exception {
 		System.out.print("registerUser");
 
@@ -76,7 +92,7 @@ public class UserController {
 
 	}
 	
-	@RequestMapping(value = "/user/register", method = RequestMethod.POST)
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	protected ModelAndView registerNewUser(HttpServletRequest request,  @ModelAttribute("user") User user, BindingResult result) throws Exception {
 
 		validator.validate(user, result);
@@ -91,9 +107,10 @@ public class UserController {
 
 			User u = userDao.register(user);
 			
-			request.getSession().setAttribute("user", u);
+			request.getSession().setAttribute("user", u.getUserId());
+			request.getSession().setAttribute("u", u);
 			
-			return new ModelAndView("home", "user", u);
+			return new ModelAndView("home");
 
 		} catch (Exception e) {
 			System.out.println("Exception: " + e.getMessage());
@@ -103,7 +120,8 @@ public class UserController {
 	@RequestMapping(value = "/user/addCustomer.htm", method = RequestMethod.POST)
 	protected ModelAndView addNewCustomer(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
-		User u = (User) session.getAttribute("user");
+		Integer userId = (Integer) session.getAttribute("user");
+		User u = userDao.getUser(userId);
 		
 		String name = request.getParameter("newName");
 		Customer c = new Customer();
@@ -114,12 +132,19 @@ public class UserController {
 		userDao.register(c);
 		userDao.updateUser(u);
 		
-		for(Customer cs: u.getCustomers()) {
-			System.out.println(cs.getName());
-		}
-		return new ModelAndView("buyTickets");
+		return new ModelAndView("buyTickets","user",u);
 		
 	}
+	@RequestMapping(value = "/user/tickets.htm", method = RequestMethod.GET)
+	protected ModelAndView viewCart(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		HttpSession session = request.getSession();
+		Integer userId = (Integer) session.getAttribute("user");
+		User u = userDao.getUser(userId);
+		
+		return new ModelAndView("viewCart","user",u);
+	}
+	
 	
 	
 }
