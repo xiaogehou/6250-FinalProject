@@ -46,14 +46,14 @@
 			</div>
 			<br>
 			<div class="form-group">
-				<label>To:</label> <input name="to" type="text" required="required" />
+				<label>To:</label> <input  name="to" type="text" required="required" />
 
 			</div>
 			<br>
 			<div class="form-group">
 				<label>Departure Time:</label>
 				<div id="datetimepicker" class="input-append date">
-					<input data-format="yyyy/MM/dd hh:mm:ss" name="departing"
+					<input data-format="yyyy/MM/dd hh:mm:ss"  name="departing" 
 						type="text" required="required"></input> <span class="add-on">
 						<i data-time-icon="icon-time" data-date-icon="icon-calendar">
 					</i>
