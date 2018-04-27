@@ -9,26 +9,13 @@
 
     <http pattern="/finalProject/403" security="none" />
     
-    <!-- 第一种方法，可以用 default-target-url 作为一个controller 来跳转.比较简单 -->
     <http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/user/*" access= "hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/admin/*" access= "hasRole('ROLE_ADMIN')" />
 		<form-login login-page="/login.htm"  default-target-url="/dispatch" authentication-failure-url="/loginfailed" />
 		<logout logout-success-url="/logout.htm" />
 	</http>
-	<!-- 第一种方法结束 -->
-       
-    <!-- 第二种方法, 用自己写的 handle 处理.配置在 mvc-dispatcher-servlet.xml中的 bean --> 
-    <!-- 
-    <http auto-config="true">
-	    <intercept-url pattern="/app/admin*" access="ROLE_ADMIN" />
-	    <intercept-url pattern="/app/welcome*" access="ROLE_USER" />
-	    <access-denied-handler ref="accessDeniedHandler"/>	    
-		<form-login authentication-success-handler-ref="mySuccessHandler"/>
-		<logout logout-success-url="/app/logout" />
-    </http>
-     -->  
-    <!-- 第二种方法结束 -->
+	
 	<authentication-manager>
 		<authentication-provider>
 			<jdbc-user-service data-source-ref="dataSource"				

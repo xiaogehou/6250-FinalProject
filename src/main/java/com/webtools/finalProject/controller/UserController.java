@@ -1,5 +1,6 @@
 package com.webtools.finalProject.controller;
 
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
 
@@ -36,8 +37,6 @@ public class UserController {
 	public ModelAndView dispatch(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession();
 		String path = request.getContextPath();
-		// String basePath =
-		// request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
 		Set<String> roles = AuthorityUtils
 				.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
@@ -61,41 +60,7 @@ public class UserController {
 
 		return "user-login";
 	}
-
-//	@RequestMapping(value = "/login.htm", method = RequestMethod.POST)
-//	public ModelAndView handleLoginForm(HttpServletRequest request, UserDAO userDao) {
-//
-//		String username = request.getParameter("username");
-//		String password = request.getParameter("password");
-//		HttpSession session = request.getSession();
-//		try {
-//			User u = userDao.get(username, password);
-//
-//			if (u != null) {
-//				if (u.getRole().equals(User.Role.customer)) {
-//
-//					session.setAttribute("user", u.getUserId());
-//					session.setAttribute("u", u);
-//					return new ModelAndView("home");
-//
-//				} else {
-//					List<Flight> allFlights = flightDao.getAllFlights();
-//					return new ModelAndView("adminHome", "flights", allFlights);
-//				}
-//
-//			} else {
-//				System.out.println("UserName/Password does not exist");
-//				session.setAttribute("errorMessage", "UserName/Password does not exist");
-//				return new ModelAndView("error");
-//			}
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		return null;
-//
-//	}
+	
 	@RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
 	public ModelAndView handleLoginFailed(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -118,10 +83,16 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	protected ModelAndView registerNewUser(HttpServletRequest request) throws Exception {
+	protected ModelAndView registerNewUser(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		
+		if(userDao.getUser(username)!=null) {
+			PrintWriter out = response.getWriter();
+			out.print("<script language='javascript'>alert(\"Username already exists!!\");" + "window.history.go(-1);</script>");
+			return null;
+		}
 		
 		try {
 			User user = new User();
@@ -146,6 +117,4 @@ public class UserController {
 			return new ModelAndView("error", "errorMessage", "error while register");
 		}
 	}
-
-
 }

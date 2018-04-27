@@ -6,55 +6,93 @@
 <html>
 <head>
 <title>Add Flight Form</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- <link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+
+<link rel="stylesheet"
+	href="../resources/css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="../resources/css/bootstrap.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 </head>
 <body>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
+	<div class="container">
+		<h3>Add a New Flight</h3>
+		<div class="well">Step2: set new flight values:</div>
 
-	<h2>Add a New Flight</h2>
-	<h3>Step2: set new flight values:</h3>
-	<form action="${contextPath}/admin/createFlight.htm" method="post">
+		<form class="form-horizontal"
+			action="${contextPath}/admin/createFlight.htm" method="post">
+			<input name="airliner" type="hidden" value="${airliner.name}" />
 
-		<input name="airliner" type="hidden" value="${airliner.name}" />
-		<table>
+			<div class="form-group">
+				<label>Airplane:</label> <select class="form-control"
+					name="airplane" required="required">
+					<c:forEach var="a" items="${airplanes}">
+						<option value="${a.modelNumber}">${a.modelNumber}</option>
+					</c:forEach>
+				</select>
+			</div>
+			<br>
+			<div class="form-group">
+				<label>From:</label> <input name="from" type="text"
+					required="required" />
+			</div>
+			<br>
+			<div class="form-group">
+				<label>To:</label> <input name="to" type="text" required="required" />
 
-			<tr>
-				<td>Airplane:</td>
-				<td><select name="airplane" required="required">
-						<c:forEach var="a" items="${airplanes}">
-							<option value="${a.modelNumber}">${a.modelNumber}</option>
-						</c:forEach>
-				</select></td>
-			</tr>
+			</div>
+			<br>
+			<div class="form-group">
+				<label>Departure Time:</label>
+				<div id="datetimepicker" class="input-append date">
+					<input data-format="yyyy/MM/dd hh:mm:ss" name="departing"
+						type="text" required="required"></input> <span class="add-on">
+						<i data-time-icon="icon-time" data-date-icon="icon-calendar">
+					</i>
+					</span>
+				</div>
+			</div>
+			<br>
+			<div class="form-group">
+				<label>Arriving Time:</label>
+				<div id="datetimepicker1" class="input-append date">
+					<input data-format="yyyy/MM/dd hh:mm:ss" name="arriving"
+						type="text" required="required"></input> <span class="add-on">
+						<i data-time-icon="icon-time" data-date-icon="icon-calendar">
+					</i>
+					</span>
+				</div>
+			</div>
+			<br>
+			<div class="form-group">
+				<input class="btn btn-default" type="submit" value="Create" />
+			</div>
 
-			<tr>
-				<td>From:</td>
-				<td><input name="from" type="text" required="required" /></td>
-			</tr>
+		</form>
+	</div>
 
-			<tr>
-				<td>To:</td>
-				<td><input name="to" type="text" required="required" /></td>
-			</tr>
 
-			<tr>
-				<td>Departure Time:</td>
-				<td><input name="departing" type="datetime-local"
-					required="required" /></td>
-			</tr>
-
-			<tr>
-				<td>Arriving Time:</td>
-				<td><input name="arriving" type="datetime-local"
-					required="required" /></td>
-			</tr>
-
-			<tr>
-				<td colspan="2"><input type="submit" value="Create" /></td>
-			</tr>
-		</table>
-
-	</form>
-
+	<script src="../resources/js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('#datetimepicker').datetimepicker({
+				language : 'pt-BR'
+			});
+		});
+		$(function() {
+			$('#datetimepicker1').datetimepicker({
+				language : 'pt-BR'
+			});
+		});
+	</script>
 </body>
+
 </html>

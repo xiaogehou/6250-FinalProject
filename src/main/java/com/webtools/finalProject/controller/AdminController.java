@@ -1,5 +1,6 @@
 package com.webtools.finalProject.controller;
 
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -118,7 +119,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin/createFlight.htm", method = RequestMethod.POST)
-	public ModelAndView createFlight(HttpServletRequest request) throws Exception {
+	public ModelAndView createFlight(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		Flight flight = new Flight();
 		Airliner airliner = airlinerDao.getAirliner(request.getParameter("airliner"));
@@ -129,11 +130,16 @@ public class AdminController {
 		flight.setDeparture(request.getParameter("from"));
 		flight.setDestination(request.getParameter("to"));
 		
-		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 		String departing = request.getParameter("departing");
 		String arriving = request.getParameter("arriving");
 		Date depart = (Date) formatter.parse(departing);
 		Date arrive = (Date) formatter.parse(arriving);
+		if(arrive.before(depart)) {
+			PrintWriter out = response.getWriter();
+			out.print("<script language='javascript'>alert(\"Time error!!\");" + "window.history.go(-1);</script>");
+			return null;
+		}
 		flight.setDepartureTime(depart);
 		flight.setArrivingTime(arrive);
 		
