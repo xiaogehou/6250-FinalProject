@@ -8,6 +8,6 @@
 </head>
 <body>
 <h1>Delete flight ${flight.flightNum} successfully!</h1>
-<a href="${pageContext.request.contextPath}/admin">[Back to Home]</a> 
+<a href="${pageContext.request.contextPath}/admin/home">[Back to Home]</a> 
 </body>
 </html>

@@ -7,29 +7,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Login page</title>
 </head>
-<body>
+<body onload='document.f.j_username.focus();'>
+	<h3>Login Page</h3>
 
-	<h1>Login Page</h1>
-	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
-	<form action="${contextPath}/login.htm" method="POST">
+	<c:if test="${not empty error}">
+		<div class="errorblock">
+			Login error, try again<br /> cause :
+			${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+		</div>
+	</c:if>
+
+	<form name='f' action="${pageContext.request.contextPath}/j_spring_security_check"	method='POST'>
+
 		<table>
 			<tr>
-				<td>Email:</td>
-				<td><input type="email" name="username" size="30"
-					required="required" /></td>
+				<td>Username:</td>
+				<td><input type='text' name='j_username'>
+				</td>
 			</tr>
-
 			<tr>
 				<td>Password:</td>
-				<td><input type="password" name="password" size="30"
-					required="required" /></td>
+				<td><input type='password' name='j_password' />
+				</td>
 			</tr>
-
 			<tr>
-				<td colspan="2"><input type="submit" value="Login" /></td>
+				<td colspan='2'>
+				    <input name="submit" type="submit" value="Login" />
+				    <input name="reset" type="reset" value="Reset" />
+				</td>
 			</tr>
-
+			
 		</table>
+
 	</form>
 </body>
 </html>

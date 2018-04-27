@@ -40,14 +40,8 @@ public class AdminController {
 	@Autowired
 	FlightDAO flightDao;
 
-	@RequestMapping(value = "/admin/logout.htm", method = RequestMethod.GET)
-	public String handleLogout(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		session.invalidate();
-		return "home";
-	}
 
-	@RequestMapping(value = "/admin", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/home", method = RequestMethod.GET)
 	public ModelAndView handleHome(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		List<Flight> flights = flightDao.getAllFlights();
 

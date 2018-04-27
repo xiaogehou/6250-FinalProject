@@ -21,7 +21,10 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml,
+			/WEB-INF/spring-security.xml,
+			/WEB-INF/spring-database.xml
+			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -31,6 +34,31 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
+	<!-- Spring Security -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
 
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring-security.xml, /WEB-INF/spring-database.xml</param-value>
+	</context-param>
 	
+	<!-- filter configeration -->
+	<filter>
+		<display-name>InputFilter</display-name>
+		<filter-name>InputFilter</filter-name>
+		<filter-class>com.webtools.finalProject.filter.InputFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>InputFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 </web-app>

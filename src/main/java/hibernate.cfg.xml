@@ -17,6 +17,7 @@
 		<mapping class="com.webtools.finalProject.pojo.Flight" />
 		<mapping class="com.webtools.finalProject.pojo.Seat" />
 		<mapping class="com.webtools.finalProject.pojo.User" />
+		<mapping class="com.webtools.finalProject.pojo.Authority" />
 		
 	</session-factory>
 </hibernate-configuration>

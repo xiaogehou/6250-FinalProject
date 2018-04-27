@@ -10,7 +10,7 @@
 <body>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 	<h2>Welcome, admin</h2>
-	<a href="${contextPath}/admin/logout.htm">[Logout]</a>
+	<a href="${contextPath}/logout.htm">[Logout]</a>
 	<a href="${contextPath}/admin/newFlight.htm">[Create New Flight]</a>
 	<div>
 		<form action="${contextPath}/admin/search.htm" method="post">

@@ -4,6 +4,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
+import com.webtools.finalProject.pojo.Authority;
 import com.webtools.finalProject.pojo.Customer;
 import com.webtools.finalProject.pojo.User;
 
@@ -14,26 +15,26 @@ public class UserDAO extends DAO {
 	public UserDAO() {
 	}
 
-	public User get(String userEmail, String password) throws Exception {
+	public User get(String username, String password) throws Exception {
 		try {
 			begin();
-			Query q = getSession().createQuery("from User WHERE email = :useremail and password = :password");
-			q.setString("useremail", userEmail);
+			Query q = getSession().createQuery("from User WHERE username = :username and password = :password");
+			q.setString("username", username);
 			q.setString("password", password);			
 			User user = (User) q.uniqueResult();
 			return user;
 			
 		} catch (HibernateException e) {
 			rollback();
-			throw new Exception("Could not get user " + userEmail, e);
+			throw new Exception("Could not get user " + username, e);
 		}
 	}
 	
-	public User getUser(int id) throws Exception{
+	public User getUser(String username) throws Exception{
 		try {
 			begin();
-			Query q = getSession().createQuery("from User WHERE id= :id");
-			q.setInteger("id", id);
+			Query q = getSession().createQuery("from User WHERE username= :username");
+			q.setString("username", username);
 			User u = (User) q.uniqueResult();
 			commit();
 			return u;
@@ -42,20 +43,6 @@ public class UserDAO extends DAO {
 			throw new Exception("Exception while get user: " + e.getMessage());
 		}
 	}
-	
-//	public User get(String userEmail){
-//		try {
-//			begin();
-//			Query q = getSession().createQuery("from User where userEmail = :useremail");
-//			q.setString("useremail", userEmail);
-//			User user = (User) q.uniqueResult();
-//			return user;
-//		}catch(Exception e){
-//			System.out.println(e.getMessage());
-//		}
-//			return null;
-//		
-//	}
 	
 
 	public User register(User u) throws Exception {
@@ -91,6 +78,18 @@ public class UserDAO extends DAO {
 		} catch (HibernateException e) {
 			rollback();
 			throw new Exception("Exception while creating customer: " + e.getMessage());
+		}
+	}
+	
+	public Authority create(Authority a) throws Exception {
+		try {
+			begin();
+			getSession().save(a);
+			commit();
+			return a;
+		} catch (HibernateException e) {
+			rollback();
+			throw new Exception("Exception while creating authority: " + e.getMessage());
 		}
 	}
 	

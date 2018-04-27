@@ -10,7 +10,7 @@
 </head>
 <body>
 	<h1>History Orders</h1>
-	<p>User: ${user.name}</p>
+	<p>User: ${user.username}</p>
 	<a href="${pageContext.request.contextPath}">[Back to Search]</a>
 	<c:forEach items="${user.customers}" var="customer">
 		<c:set var="flights" value="${customer.flights}" />

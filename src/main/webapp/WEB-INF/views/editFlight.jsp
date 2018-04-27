@@ -12,19 +12,17 @@
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 	<a href="${contextPath}/admin/delete.htm?flightNum=${flight.flightNum}">[Delete
 		This Flight]</a>
+	<a href="${pageContext.request.contextPath}/admin/home">[Back to
+		Home]</a>
 	<form
 		action="${contextPath}/admin/updateFlight.htm?flightNum=${flight.flightNum}"
 		method="post">
 		From: <input type="text" name="from" value="${flight.departure}"></br>
-		To: <input type="text" name="to" value="${flight.destination}">
-		</br> Departing: <input type="datetime-local" name="departing"
-			value="${flight.departureTime}"></br> Arriving: <input
-			type="datetime-local" name="arriving" value="${flight.arrivingTime}"></br>
-		Airliner: <input type="text" name="airliner"
-			value="${flight.airplane.airliner.name}" readonly="readonly"></br>
-		Airplane Model: <input type="text" name="model"
-			value="${flight.airplane.modelNumber}" readonly="readonly">
-			
+		To: <input type="text" name="to" value="${flight.destination}"></br> 
+		Departing: <input type="datetime-local" name="departing" value="${flight.departureTime}"></br> 
+		Arriving: <input type="datetime-local" name="arriving" value="${flight.arrivingTime}"></br>
+		Airliner: <input type="text" name="airliner" value="${flight.airplane.airliner.name}" readonly="readonly"></br>
+		Airplane Model: <input type="text" name="model" value="${flight.airplane.modelNumber}" readonly="readonly"> 
 		<input name="submit" type="submit" value="Update">
 	</form>
 </body>

@@ -6,38 +6,71 @@
 <html>
 <head>
 <title>Add User Form</title>
+<script>
+	function checkname() {
+		var xmlHttp;
+		try // Firefox, Opera 8.0+, Safari
+		{
+			xmlHttp = new XMLHttpRequest();
+		} catch (e) {
+			try // Internet Explorer
+			{
+				xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch (e) {
+				try {
+					xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+				} catch (e) {
+					alert("Your browser does not support AJAX!");
+					return false;
+				}
+			}
+		}
+
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4) {
+				var str = xmlHttp.responseText;
+				if (str == "true") {
+					document.getElementById("msg").innerHTML = "<span style='color:#00cc00'>Valid Username</span>";
+				} else {
+					document.getElementById("msg").innerHTML = "<span style='color:#cc0000'>Invalid Username</span>";
+				}
+			}
+		}
+
+		var name = document.getElementById("UserName").value;
+
+		xmlHttp.open("GET", "../check.htm?username=" + name, true);
+		xmlHttp.setRequestHeader("Content-Type",
+				"application/x-www-form-urlencoded");
+		xmlHttp.send();
+	}
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 <body>
 
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
-	<a href="${contextPath}">Go Back</a><br/>
+	<a href="${contextPath}">Go Back</a>
+	<br />
 
 	<h2>Register a New User</h2>
 
-	<form:form action="${contextPath}/register" commandName="user"
-		method="post">
+	<form action="${contextPath}/register" method="post">
 
 		<table>
 
 			<tr>
 				<td>User Name:</td>
-				<td><form:input path="name" size="30" required="required" />
-					<font color="red"><form:errors path="name" /></font></td>
+				<td><input type="text" size="30" id="UserName" name="username"
+					required="required" />
+					<div id="msg"></div></td>
 			</tr>
 
 			<tr>
 				<td>Password:</td>
-				<td><form:password path="password" size="30"
-						required="required" /> <font color="red"><form:errors
-							path="password" /></font></td>
-			</tr>
-
-			<tr>
-				<td>Email Id:</td>
-				<td><form:input path="email" size="30"
-						type="email" required="required" /> <font color="red"><form:errors
-							path="email" /></font></td>
+				<td><input type="password" size="30" name="password"
+					required="required" /></td>
 			</tr>
 
 			<tr>
@@ -45,7 +78,6 @@
 			</tr>
 		</table>
 
-	</form:form>
-
+	</form>
 </body>
 </html>

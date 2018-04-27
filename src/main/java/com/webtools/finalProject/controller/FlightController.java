@@ -67,8 +67,8 @@ public class FlightController {
 		HttpSession session = request.getSession();
 		PrintWriter out = response.getWriter();
 		ModelAndView mav = new ModelAndView();
-		Integer userId = (Integer) session.getAttribute("user");
-		User u = userDao.getUser(userId);
+		String username = (String) session.getAttribute("user");
+		User u = userDao.getUser(username);
 		if (session.getAttribute("user") != null) {
 			int flightNum = Integer.parseInt(request.getParameter("flightNum"));
 			Flight flight = flightDao.getFlight(flightNum);
@@ -77,7 +77,7 @@ public class FlightController {
 			mav.setViewName("buyTickets");
 			return mav;
 		} else {
-			out.println("<meta http-equiv='refresh' content='2;URL=/finalProject/user/login.htm'>");// redirects after 3 seconds
+			out.println("<meta http-equiv='refresh' content='2;URL=/finalProject/login.htm'>");// redirects after 3 seconds
 			out.println("<p>Please Login Before Buying Tickets!</p>");
 			return null;
 		}
@@ -88,7 +88,7 @@ public class FlightController {
 	public ModelAndView buyTickets(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
-		Integer userId = (Integer) session.getAttribute("user");
+		String username = (String) session.getAttribute("user");
 		Flight flight = (Flight) session.getAttribute("flight");
 		String[] passengerIDs = request.getParameterValues("customer");
 		if(passengerIDs==null) {
@@ -110,7 +110,7 @@ public class FlightController {
 				customers.add(c);
 				map.put(c, seat);
 			}
-			User u = userDao.getUser(userId);
+			User u = userDao.getUser(username);
 			mav.addObject("customers",customers);
 			mav.addObject("map",map);
 			mav.addObject("user",u);
@@ -118,5 +118,34 @@ public class FlightController {
 			mav.setViewName("buy-success");
 			return mav;
 		}
+	}
+
+	@RequestMapping(value = "/user/addCustomer.htm", method = RequestMethod.POST)
+	protected ModelAndView addNewCustomer(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		String username = (String) session.getAttribute("user");
+		User u = userDao.getUser(username);
+
+		String name = request.getParameter("newName");
+		Customer c = new Customer();
+		c.setUser(u);
+		c.setName(name);
+		u.getCustomers().add(c);
+
+		userDao.register(c);
+		userDao.updateUser(u);
+
+		return new ModelAndView("buyTickets", "user", u);
+
+	}
+
+	@RequestMapping(value = "/user/tickets.htm", method = RequestMethod.GET)
+	protected ModelAndView viewCart(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		HttpSession session = request.getSession();
+		String username = (String) session.getAttribute("user");
+		User u = userDao.getUser(username);
+
+		return new ModelAndView("viewCart", "user", u);
 	}
 }

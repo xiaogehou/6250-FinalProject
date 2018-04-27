@@ -10,6 +10,6 @@
 </head>
 <body>
 	<h1>Add new Flight ${flight.flightNum} Successfully!</h1>
-	<a href="${pageContext.request.contextPath}/admin">[Back to Home]</a>  
+	<a href="${pageContext.request.contextPath}/admin/home">[Back to Home]</a>  
 </body>
 </html>

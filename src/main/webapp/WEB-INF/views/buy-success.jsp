@@ -11,7 +11,7 @@
 <body>
 	<h1>Bought tickets Successfully!</h1>
 	<a href="${pageContext.request.contextPath}">[Back to Search]</a> 
-	<p>User: ${user.name}</p>
+	<p>User: ${user.username}</p>
 
 	<c:if test="${customers!=null&&fn:length(customers)!=0}">
 		<c:forEach items="${customers}" var="customer">
