@@ -18,5 +18,39 @@ The main functions in my project including user register, login, logout, searchi
 * Bootstrap for part of pages;<br>
 
 ## Roles’ Tasks and Screen Shots
-* Anonymous User (Before login):
-1)	Search and view flight result list by entering origin, destination and departure date but cannot buy tickets;
+### Anonymous User (Before login):
+* Search and view flight result list by entering origin, destination and departure date but cannot buy tickets;<br>
+<img src="https://github.com/xiaogehou/6250-FinalProject/blob/master/images/Picture1.png" width = 50% height = 50% /><br>
+<img src="https://github.com/xiaogehou/6250-FinalProject/blob/master/images/Picture2.png" width = 50% height = 50% /><br>
+    
+### User Role (After login):
+* Login by username and password;<br>
+<img src="https://github.com/xiaogehou/6250-FinalProject/blob/master/images/Picture3.png" width = 30% height = 30% /><br>
+    
+* Search and view flight result list by entering origin, destination and departure date;<br>
+* Choose specific flight to buy tickets (Can’t buy tickets before login);<br>
+<img src="https://github.com/xiaogehou/6250-FinalProject/blob/master/images/Picture4.png" width = 50% height = 50% /><br>
+    
+* Add new passenger in user’s customer(passenger) list;<br>
+<img src="https://github.com/xiaogehou/6250-FinalProject/blob/master/images/Picture5.png" width = 50% height = 50% /><br>
+    
+* Choose multiple passengers in customer list to buy tickets. When submit, the system will assign the cheapest seat of the flight to passengers. When above finished user can view passengers’ flight details including seat location and price.<br>
+<img src="https://github.com/xiaogehou/6250-FinalProject/blob/master/images/Picture6.png" width = 50% height = 50% /><br>
+    
+* View history orders for all passengers that user created.<br>
+<img src="https://github.com/xiaogehou/6250-FinalProject/blob/master/images/Picture7.png" width = 50% height = 50% /><br>
+    
+### Admin Role (After login)
+* View all flights in database;<br>
+* Search for wanted flights by origin and destination;<br>
+<img src="https://github.com/xiaogehou/6250-FinalProject/blob/master/images/Picture8.png" width = 50% height = 50% /><br>
+    
+* Choose specific flight to update or delete;<br>
+<img src="https://github.com/xiaogehou/6250-FinalProject/blob/master/images/Picture9.png" width = 50% height = 50% /><br>
+    
+* Create a new flight and save in database (Step 1: choose an airliner; Step 2: select an airplane belongs to chosen airliner then arrange flight details for it)<br>
+<img src="https://github.com/xiaogehou/6250-FinalProject/blob/master/images/Picture10.png" width = 50% height = 50% /><br>
+<img src="https://github.com/xiaogehou/6250-FinalProject/blob/master/images/Picture11.png" width = 30% height = 30% /><br>
+
+
+
