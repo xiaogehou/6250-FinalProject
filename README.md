@@ -1,6 +1,6 @@
 # Flight tickets website
 
-This is a complete website integrated with easy front page, backend APIs supported by sample datas saved in Mysql database.
+This is a complete website integrated with simple front page, backend APIs supported by sample datas saved in Mysql database.
 
 
 ## Project Summary
